@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مانجا</title>
+<meta name="theme-color" content="#4b3fd6">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+:root{--bg:#f6f4fa;--sf:#fff;--tx:#1b1a22;--mu:#6b6878;--ac:#4b3fd6;--ac2:#e8e5fb;--ln:#e2dfec}
+@media(prefers-color-scheme:dark){:root{--bg:#14131a;--sf:#1e1d27;--tx:#ece9f6;--mu:#9b97ad;--ac:#9a90ff;--ac2:#2a2850;--ln:#2d2b3a}}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html{padding-top:env(safe-area-inset-top,0px)}
+body{font-family:"Segoe UI",Tahoma,"Noto Sans Arabic",sans-serif;background:var(--bg);color:var(--tx);padding-bottom:70px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 14px 8px;border-bottom:1px solid var(--ln)}
+h1{font-size:20px;margin-bottom:8px}
+input,select{width:100%;padding:11px 12px;border-radius:12px;border:1px solid var(--ln);background:var(--sf);color:var(--tx);font:inherit}
+.row{display:flex;gap:8px;margin-top:8px;overflow-x:auto}
+.chip{flex:none;padding:7px 14px;border-radius:20px;border:1px solid var(--ln);background:var(--sf);color:var(--tx);font:inherit;font-size:14px}
+.chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;padding:14px}
+.card{cursor:pointer}
+.card img{min-height:140px;width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:10px;background:var(--ac2)}
+.card p{font-size:13px;margin-top:5px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+nav{position:fixed;bottom:0;inset-inline:0;display:flex;background:var(--sf);border-top:1px solid var(--ln);padding-bottom:env(safe-area-inset-bottom,0)}
+nav button{flex:1;padding:12px 0;border:0;background:none;color:var(--mu);font:inherit;font-size:13px}
+nav button.on{color:var(--ac);font-weight:700}
+.pad{padding:14px}
+.top{display:flex;gap:14px}
+.top img{width:120px;border-radius:12px}
+.btn{padding:10px 16px;border-radius:12px;border:0;background:var(--ac);color:#fff;font:inherit;margin-top:10px;margin-inline-end:6px}
+.btn.alt{background:var(--ac2);color:var(--ac)}
+.ch{display:flex;justify-content:space-between;padding:13px 4px;border-bottom:1px solid var(--ln);cursor:pointer}
+.ch.read{color:var(--mu)}
+.site{display:flex;align-items:center;justify-content:space-between;background:var(--sf);border-radius:14px;padding:12px 14px;margin-top:10px}
+.site small{color:var(--mu);display:block;direction:ltr;text-align:right}
+#reader{position:fixed;inset:0;background:#000;overflow-y:auto;z-index:20;display:none}
+#reader img{display:block;width:100%;max-width:800px;margin:auto}
+#rbar{position:sticky;top:0;display:flex;justify-content:space-between;background:#000c;color:#fff;padding:10px 14px;z-index:2}
+#rbar button{background:none;border:0;color:#fff;font:inherit}
+.msg{color:var(--mu);text-align:center;padding:40px 20px}
+
+.dh{position:relative;overflow:hidden;padding:14px 14px 18px;min-height:300px;display:flex;flex-direction:column;justify-content:flex-end}
+.dh .bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(18px) opacity(.35);transform:scale(1.2)}
+.dh>*{position:relative}
+.dh .back{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));inset-inline-start:12px;font-size:24px;background:none;border:0;color:var(--tx)}
+.dh .hr{display:flex;gap:14px;align-items:flex-end;margin-top:60px}
+.dh .hr img{width:130px;aspect-ratio:2/3;object-fit:cover;border-radius:14px;box-shadow:0 4px 16px #0004}
+.dh h2{font-size:19px;line-height:1.3}
+.tabs{display:flex;border-bottom:1px solid var(--ln);background:var(--bg)}
+.tabs button{flex:1;padding:14px 0;border:0;background:none;color:var(--tx);font:inherit;border-bottom:3px solid transparent}
+.tabs button.on{color:var(--ac);border-color:var(--ac)}
+.badge{background:var(--ac2);border-radius:10px;padding:1px 7px;font-size:12px;margin-inline-start:4px}
+.stats{display:flex;text-align:center;padding:14px 0}
+.stats div{flex:1;font-size:13px;color:var(--mu);border-inline-end:1px solid var(--ln)}
+.stats div:last-child{border:0}
+.stats b{display:block;font-size:22px;color:var(--tx);margin-bottom:2px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:6px 14px}
+.tags span{padding:9px 16px;border:1px solid var(--ln);border-radius:14px;background:var(--ac2)}
+.desc{padding:14px;line-height:2;text-align:justify}
+.cr{display:flex;align-items:center;gap:14px;padding:14px;border-bottom:1px solid var(--ln);cursor:pointer}
+.cr.read{opacity:.5}
+.cr .n{width:44px;height:44px;border-radius:50%;background:#45434f;color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.cr small{color:var(--mu);display:block}
+.cm{padding:12px 14px;border-bottom:1px solid var(--ln)}
+.cm small{color:var(--mu)}
+.cmf{display:flex;gap:8px;padding:14px}
+.dbar{position:fixed;bottom:50px;inset-inline:0;display:flex;gap:6px;background:var(--sf);border-top:1px solid var(--ln);padding:6px 10px;z-index:4}
+.dbar button{background:none;border:0;color:var(--tx);font-size:22px;padding:8px 14px}
+.fab{position:fixed;bottom:112px;inset-inline-end:16px;z-index:6;background:var(--ac);color:#fff;border:0;border-radius:18px;padding:16px 20px;font:inherit;box-shadow:0 4px 14px #0005}
+</style>
+</head>
+<body>
+<header>
+<h1 id="t">استكشاف</h1>
+<div id="hd"></div>
+</header>
+<main id="m"></main>
+<div id="reader"></div>
+<nav id="nav"></nav>
+
+<script>
+const API="https://api.mangadex.org";
+const $=s=>document.querySelector(s);
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let S={tab:"explore",type:"",lang:ld("lang","ar"),q:"",lib:ld("lib",[]),hist:ld("hist",{}),readCh:ld("readCh",{}),
+ sites:ld("sites",[{name:"MangaDex",url:"https://mangadex.org",on:true,builtin:true}])};
+const save=()=>{sv("lib",S.lib);sv("hist",S.hist);sv("readCh",S.readCh);sv("sites",S.sites);sv("lang",S.lang)};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const title=m=>{const a=m.attributes;return a.title.en||Object.values(a.title)[0]||Object.values(a.altTitles?.[0]||{})[0]||"—"};
+const cover=m=>{const r=m.relationships.find(r=>r.type==="cover_art");return r?.attributes?`https://uploads.mangadex.org/covers/${m.id}/${r.attributes.fileName}.256.jpg`:""};
+const cardHtml=m=>`<div class="card" onclick="openManga('${m.id}')"><img loading="lazy" src="${cover(m)}" alt=""><p>${esc(title(m))}</p></div>`;
+const stash={};
+const mdOn=()=>S.sites.some(s=>s.builtin&&s.on);
+
+function nav(){
+ const T=[["explore","استكشاف"],["lib","المكتبة"],["hist","السجل"],["sites","المواقع"]];
+ $("#nav").innerHTML=T.map(([k,n])=>`<button class="${S.tab===k?"on":""}" onclick="go('${k}')">${n}</button>`).join("");
+}
+function go(t){S.tab=t;render()}
+const DEMO=[["World’s Strongest Straight Punch","ongoing",["Action","Martial Arts","Thriller"]],["The Heavenly Demon’s Apocalypse","ongoing",["Action","Fantasy","Thriller"]],["Is It Bad That the Main Character’s a Roleplayer?","ongoing",["Action","Adventure","Fantasy"]],["Shadow of the Last Blade","completed",["Action","Drama"]],["Moonlit Archive","ongoing",["Mystery","Drama"]],["Iron Sparrow","hiatus",["Adventure","Comedy"]]].map((d,i)=>({id:"demo"+i,relationships:[],attributes:{title:{en:d[0]},status:d[1],tags:d[2].map(n=>({attributes:{name:{en:n}}})),description:{ar:"عرض تجريبي: هنا يظهر وصف العمل عند توفر الاتصال بالمصدر. افتح الملف في المتصفح لتحميل الأعمال الحقيقية."}}}));
+let DEMOMODE=false;
+async function api(path){
+ try{const r=await fetch(API+path);if(!r.ok)throw new Error(r.status);return await r.json()}
+ catch(e){
+  DEMOMODE=true;
+  if(path.startsWith("/statistics"))return{statistics:{[path.split("/")[3]]:{rating:{average:9.2}}}};
+  if(path.includes("/feed"))return{data:Array.from({length:12},(_,i)=>({id:"c"+(12-i),attributes:{chapter:String(12-i),pages:20,title:"",publishAt:new Date(2026,5,20+i).toISOString()}}))};
+  if(path.startsWith("/manga/demo"))return{data:DEMO[+path.match(/demo(\d)/)[1]]};
+  if(path.startsWith("/manga?"))return{data:DEMO};
+  throw e;
+ }
+}
+
+async function render(){
+ nav();$("#t").parentElement.style.display="";$(".dbar,.fab")?.remove();const m=$("#m"),hd=$("#hd");
+ $("#t").textContent={explore:"استكشاف",lib:"المكتبة",hist:"متابعة القراءة",sites:"إدارة المواقع"}[S.tab];
+ if(S.tab==="explore"){
+  hd.innerHTML=`<input id="q" placeholder="ابحث عن عمل..." value="${esc(S.q)}">
+  <div class="row">${[["","الكل"],["ja","مانجا"],["ko","مانهوا"],["zh","مانها"]].map(([k,n])=>`<button class="chip ${S.type===k?"on":""}" onclick="S.type='${k}';render()">${n}</button>`).join("")}
+  <button class="chip" onclick="S.lang=S.lang==='ar'?'en':'ar';save();render()">اللغة: ${S.lang==="ar"?"العربية":"English"}</button></div>`;
+  $("#q").onchange=e=>{S.q=e.target.value;render()};
+  if(!mdOn()){m.innerHTML='<p class="msg">فعّل مصدر MangaDex من تبويب المواقع.</p>';return}
+  m.innerHTML='<p class="msg">جارٍ التحميل...</p>';DEMOMODE=false;
+  let u=`/manga?limit=36&includes[]=cover_art&contentRating[]=safe&contentRating[]=suggestive&availableTranslatedLanguage[]=${S.lang}`;
+  if(S.q)u+="&title="+encodeURIComponent(S.q);else u+="&order[followedCount]=desc";
+  if(S.type)u+="&originalLanguage[]="+S.type;
+  try{const d=await api(u);d.data.forEach(x=>stash[x.id]=x);
+   m.innerHTML=(DEMOMODE?'<p class="msg" style="padding:10px">وضع تجريبي: لا يوجد اتصال بالمصدر هنا. افتح الملف في المتصفح للأعمال الحقيقية.</p>':"")+(d.data.length?`<div class="grid">${d.data.map(cardHtml).join("")}</div>`:'<p class="msg">لا توجد نتائج.</p>')}
+  catch(e){m.innerHTML='<p class="msg">تعذّر التحميل. تحقق من الاتصال ثم حاول مرة أخرى.</p>'}
+ }
+ else if(S.tab==="lib"){
+  hd.innerHTML="";
+  m.innerHTML=S.lib.length?`<div class="grid">${S.lib.map(x=>`<div class="card" onclick="openManga('${x.id}')"><img src="${x.img}" alt=""><p>${esc(x.name)}</p></div>`).join("")}</div>`:'<p class="msg">المكتبة فارغة. افتح عملاً واضغط «أضف للمكتبة».</p>';
+ }
+ else if(S.tab==="hist"){
+  hd.innerHTML="";
+  const h=Object.values(S.hist).sort((a,b)=>b.t-a.t);
+  m.innerHTML=h.length?`<div class="pad">${h.map(x=>`<div class="ch" onclick="readCh('${x.cid}','${x.mid}')"><span>${esc(x.name)}</span><span>فصل ${esc(x.ch||"؟")}</span></div>`).join("")}</div>`:'<p class="msg">لم تقرأ شيئاً بعد.</p>';
+ }
+ else{
+  hd.innerHTML="";
+  m.innerHTML=`<div class="pad"><input id="su" dir="ltr" placeholder="https://example.com">
+  <input id="sn" style="margin-top:8px" placeholder="اسم الموقع">
+  <button class="btn" onclick="addSite()">إضافة موقع</button>
+  <p style="color:var(--mu);font-size:13px;margin-top:10px;line-height:1.6">المواقع المضافة يدوياً تُفتح في المتصفح الخارجي. المصدر المدمج MangaDex يعمل داخل التطبيق بالكامل.</p>
+  ${S.sites.map((s,i)=>`<div class="site"><div><b>${esc(s.name)}</b><small>${esc(s.url)}</small></div>
+  <div><button class="chip ${s.on?"on":""}" onclick="S.sites[${i}].on=!S.sites[${i}].on;save();render()">${s.on?"مفعّل":"معطّل"}</button>
+  ${s.builtin?"":`<button class="chip" onclick="window.open('${esc(s.url)}','_blank')">فتح</button><button class="chip" onclick="S.sites.splice(${i},1);save();render()">حذف</button>`}</div></div>`).join("")}</div>`;
+ }
+}
+function addSite(){
+ let u=$("#su").value.trim(),n=$("#sn").value.trim();
+ if(!u)return;if(!/^https?:\/\//.test(u))u="https://"+u;
+ try{new URL(u)}catch(e){alert("العنوان غير صالح");return}
+ S.sites.push({name:n||new URL(u).hostname,url:u,on:true});save();render();
+}
+
+let D={};
+async function openManga(id,tab){
+ const m=$("#m");$("#hd").innerHTML="";$("#t").parentElement.style.display="none";
+ m.innerHTML='<p class="msg">جارٍ التحميل...</p>';
+ try{
+  let x=stash[id];if(!x){x=(await api(`/manga/${id}?includes[]=cover_art`)).data;stash[id]=x}
+  if(!D[id]||tab==="refresh"){
+   const f=await api(`/manga/${id}/feed?limit=500&translatedLanguage[]=${S.lang}&order[chapter]=desc&includeExternalUrl=0`);
+   let rt="–";try{const st=await api(`/statistics/manga/${id}`);const a=st.statistics[id].rating.average;if(a)rt=(a/2).toFixed(1)}catch(e){}
+   D[id]={chs:f.data.filter(c=>c.attributes.pages>0),rt,tab:"d",asc:true};
+  }
+  const d=D[id];if(tab&&tab!=="refresh")d.tab=tab;
+  window._chs=d.chs;window._mid=id;
+  const a=x.attributes,inLib=S.lib.some(l=>l.id===id);
+  const desc=a.description?.ar||a.description?.en||"لا يوجد وصف.";
+  const st={ongoing:"مستمر",completed:"مكتمل",hiatus:"متوقف مؤقتاً",cancelled:"ملغي"}[a.status]||a.status;
+  const tags=a.tags.map(t=>t.attributes.name.en).slice(0,8);
+  const cms=ld("cm_"+id,[]);
+  let body="";
+  if(d.tab==="d"){
+   body=`<div class="stats"><div><b>★ ${d.rt}</b>التقييم</div><div><b>${d.chs.length}</b>عدد الفصول</div><div><b>MD</b>MangaDex</div></div>
+   <div class="tags">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div><p class="desc">${esc(desc)}</p>`;
+  }else if(d.tab==="c"){
+   const L=d.asc?[...d.chs].reverse():d.chs;
+   body=L.length?L.map(c=>{const dt=new Date(c.attributes.publishAt).toLocaleDateString("ar",{day:"numeric",month:"long"});
+    return `<div class="cr ${S.readCh[c.id]?"read":""}" onclick="readCh('${c.id}','${id}')"><span class="n">${esc(c.attributes.chapter||"؟")}</span><div>${c.attributes.title?esc(c.attributes.title):"فصل "+esc(c.attributes.chapter||"؟")}<small>${dt}</small></div></div>`}).join(""):'<p class="msg">لا توجد فصول بهذه اللغة. غيّر اللغة من الاستكشاف.</p>';
+  }else{
+   body=`<div class="cmf"><input id="ci" placeholder="أضف تعليق..."><button class="btn" style="margin:0" onclick="addCm('${id}')">إرسال</button></div>`+
+   (cms.length?cms.map((c,i)=>`<div class="cm"><b>أنا</b> <small>${new Date(c.t).toLocaleDateString("ar")}</small><p style="margin:6px 0">${esc(c.x)}</p><button class="chip" onclick="delCm('${id}',${i})">حذف</button></div>`).join(""):'<p class="msg">لا توجد تعليقات بعد.</p>');
+  }
+  const last=d.chs[d.chs.length-1];
+  const cont=S.hist[id];
+  m.innerHTML=`<div class="dh"><div class="bg" style="background-image:url(${cover(x)})"></div><button class="back" onclick="closeD()">→</button>
+  <div class="hr"><img src="${cover(x)}" alt=""><div><h2>${esc(title(x))}</h2><p style="color:var(--mu);margin-top:6px">الحالة: ${st}</p></div></div></div>
+  <div class="tabs"><button class="${d.tab==="d"?"on":""}" onclick="openManga('${id}','d')">الوصف</button><button class="${d.tab==="c"?"on":""}" onclick="openManga('${id}','c')">الفصول</button><button class="${d.tab==="m"?"on":""}" onclick="openManga('${id}','m')">التعليقات<span class="badge">${cms.length}</span></button></div>
+  ${body}<div style="height:130px"></div>
+  <div class="dbar"><button onclick="window.open('https://mangadex.org/title/${id}','_blank')">⋮</button><button onclick="openManga('${id}','refresh')">⟳</button><button onclick="D['${id}'].asc=!D['${id}'].asc;openManga('${id}','c')">⇅</button><button onclick="toggleLib('${id}')" style="color:${inLib?"#e5484d":"inherit"}">${inLib?"♥":"♡"}</button></div>
+  ${last?`<button class="fab" onclick="readCh('${cont?cont.cid:last.id}','${id}')">${cont?"متابعة":"ابدأ القراءة"}</button>`:""}`;
+  window.scrollTo(0,0);
+ }catch(e){m.innerHTML='<p class="msg">تعذّر فتح العمل.</p><button class="btn" onclick="closeD()">رجوع</button>'}
+}
+function closeD(){$("#t").parentElement.style.display="";render()}
+function addCm(id){const v=$("#ci").value.trim();if(!v)return;const c=ld("cm_"+id,[]);c.unshift({x:v,t:Date.now()});sv("cm_"+id,c);openManga(id,"m")}
+function delCm(id,i){const c=ld("cm_"+id,[]);c.splice(i,1);sv("cm_"+id,c);openManga(id,"m")}
+function toggleLib(id){
+ const x=stash[id],i=S.lib.findIndex(l=>l.id===id);
+ if(i>=0)S.lib.splice(i,1);else S.lib.push({id,name:title(x),img:cover(x)});
+ save();openManga(id,D[id]?.tab);
+}
+async function readCh(cid,mid){
+ const r=$("#reader");r.style.display="block";r.scrollTop=0;
+ r.innerHTML='<p class="msg">جارٍ تحميل الصفحات...</p>';
+ try{
+  const d=await api(`/at-home/server/${cid}`);
+  const chs=window._chs||[];const c=chs.find(c=>c.id===cid);
+  const i=chs.findIndex(c=>c.id===cid);
+  const nx=i>0?chs[i-1].id:null;
+  S.readCh[cid]=1;
+  S.hist[mid]={mid,cid,name:stash[mid]?title(stash[mid]):"",ch:c?.attributes.chapter,t:Date.now()};save();
+  r.innerHTML=`<div id="rbar"><button onclick="closeR()">إغلاق ✕</button>${nx?`<button onclick="readCh('${nx}','${mid}')">الفصل التالي ›</button>`:""}</div>`+
+   d.chapter.data.map(f=>`<img loading="lazy" src="${d.baseUrl}/data/${d.chapter.hash}/${f}" alt="">`).join("")+
+   (nx?`<button class="btn" style="display:block;margin:20px auto" onclick="readCh('${nx}','${mid}')">الفصل التالي</button>`:"");
+ }catch(e){r.innerHTML='<div id="rbar"><button onclick="closeR()">إغلاق ✕</button></div><p class="msg" style="color:#ccc">تعذّر تحميل الفصل.</p>'}
+}
+function closeR(){$("#reader").style.display="none";if(S.tab==="hist")render()}
+render();
+if("serviceWorker" in navigator&&location.protocol==="https:"){try{navigator.serviceWorker.register("sw.js")}catch(e){}}
+</script>
+</body>
+</html>
